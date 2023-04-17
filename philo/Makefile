@@ -10,15 +10,17 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = philo
+
 FLAGS = -I libft/head -I head -I . -lreadline
 
-DEBUG_FLAGS = -g3 #-fsanitize=address
+DEBUG_FLAGS = -g3 -fsanitize=address
 
-LIBFT = libft/libft.a
-
-SRC =	philo.c
-
+SRC =	philo.c\
+		ft_atoi.c\
+		check_args.c\
+		philo_eating.c\
+		philo_thiking.c
 
 BONUS_SRC =
 
@@ -28,33 +30,25 @@ OBJ = $(addprefix obj/,$(SRC:.c=.o))
 
 BONUS_OBJ = $(addprefix obj/,$(BONUS_SRC:.c=.o))
 
-all : create_obj_folder lib
+all : create_obj_folder
 	$(MAKE) $(NAME)
 
-$(NAME) : $(OBJ) $(LIBFT)
-	$(CC) $(OBJ) $(LIBFT) $(FLAGS) -L /opt/homebrew/opt/readline/lib -I /opt/homebrew/opt/readline/include $(DEBUG_FLAGS) -o $(NAME)
+$(NAME) : $(OBJ)
+	$(CC) $(OBJ) $(FLAGS) $(DEBUG_FLAGS) -o $(NAME)
 
-bonus : create_obj_folder lib .bonus
+bonus : create_obj_folder .bonus
 
 .bonus : $(OBJ) $(BONUS_OBJ)
-	$(CC) $(OBJ) $(BONUS_OBJ) $(LIBFT) $(FLAGS) -o $(NAME)
+	$(CC) $(OBJ) $(BONUS_OBJ) $(FLAGS) -o $(NAME)
 
 create_obj_folder :
 	mkdir -p obj
 
-obj/%.o : src/%.c Makefile $(LIBFT)
-	cc $(DEBUG_FLAGS) -Werror -Wall -Wextra -c $< -MD -I /opt/homebrew/opt/readline/include -I libft/head -I head -o $@
+obj/%.o : src/%.c Makefile
+	cc $(DEBUG_FLAGS) -Werror -Wall -Wextra -c $< -MD -I head -o $@
 
-debug : lib
-	$(CC) $(OBJ) $(LIBFT) $(FLAGS) $(DEBUG_FLAGS) -o debug$(NAME)
-
-$(LIBFT): lib
-
-lib : libft
-	@$(MAKE) -C libft
-
-libft :
-	git clone git@github.com:fan2bolide/libft.git
+debug :
+	$(CC) $(OBJ) $(FLAGS) $(DEBUG_FLAGS) -o debug$(NAME)
 
 run : all
 	./a.out
@@ -62,12 +56,10 @@ run : all
 clean :
 	$(RM) $(OBJ) $(BONUS_OBJ) $(DEPENDS)
 	$(RM) -r $(NAME).dSYM
-	$(MAKE) clean -C libft
 
 fclean : clean
 	@$(RM) $(NAME)
 	@$(RM) .main .bonus
-	@$(MAKE) fclean -C libft
 
 re : fclean
 	@$(MAKE) all
