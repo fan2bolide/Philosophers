@@ -20,7 +20,8 @@ SRC =	philo.c\
 		ft_atoi.c\
 		check_args.c\
 		philo_eating.c\
-		philo_thiking.c
+		philo_thinking.c\
+		philo_sleeping.c
 
 BONUS_SRC =
 

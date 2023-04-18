@@ -1,8 +1,10 @@
 #ifndef PHILO_H
 # define PHILO_H
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_philo
 {
@@ -21,6 +23,15 @@ typedef struct s_table
 	pthread_mutex_t *forks;
 }	t_table;
 
-int	ft_atoi(const char *str);
+struct s_to_thread
+{
+	t_philo	*philos;
+	t_philo *philo;
+};
+
+int		ft_atoi(const char *str);
+void	philo_think(t_philo *philo);
+void	philo_sleep(t_philo *philo);
+int		philo_eat(t_philo *philo);
 
 #endif
