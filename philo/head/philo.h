@@ -6,28 +6,23 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_philo
+typedef struct s_philo_infos
 {
-	int	nb_of_philos;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
+	int	nb_of_philos;
+	int	number_of_meals_needed;
+}	t_philo_info;
+
+typedef struct s_philo
+{
 	int	id;
-	int	number_of_times_each_philosopher_must_eat;
+	pthread_mutex_t fork;
 	pthread_t philo;
-
+	struct s_philo *philos;
+	t_philo_info *info;
 }	t_philo;
-
-typedef struct s_table
-{
-	pthread_mutex_t *forks;
-}	t_table;
-
-struct s_to_thread
-{
-	t_philo	*philos;
-	t_philo *philo;
-};
 
 int		ft_atoi(const char *str);
 void	philo_think(t_philo *philo);
