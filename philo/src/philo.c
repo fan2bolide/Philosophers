@@ -1,4 +1,5 @@
 #include "philo.h"
+#include "philo_time.h"
 
 void	*philo_start(void *param)
 {
@@ -7,13 +8,16 @@ void	*philo_start(void *param)
 
 	i = 0;
 	philo = (t_philo *)param;
+	pthread_mutex_lock(&philo->death_time_mutex);
+	philo->death_time = get_current_time();
+	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
+	pthread_mutex_unlock(&philo->death_time_mutex);
 	if (philo->info->number_of_meals_needed == 0)
 	{
 		while (1)
 		{
-			if (!philo_eat(philo))
-				return (NULL);
-			printf("philo %d is sleeping\n", philo->id);
+			philo_eat(philo);
+			printf("%lld philo %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
 			philo_sleep(philo);
 			usleep(100);
 		}
@@ -23,7 +27,7 @@ void	*philo_start(void *param)
 		while (i < philo->info->number_of_meals_needed)
 		{
 			philo_eat(philo);
-			printf("philo %d is sleeping\n", philo->id);
+			printf("%lld philo %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
 			philo_sleep(philo);
 			usleep(100);
 			i++;
@@ -43,9 +47,17 @@ void	create_philos(t_philo *philos)
 		philos[i].philos = philos;
 		philos[i].info = philos->info;
 		pthread_mutex_init(&philos[i].fork, NULL);
+		pthread_mutex_init(&philos[i].death_time_mutex, NULL);
 		pthread_create(&philos[i].philo, NULL, philo_start, &philos[i]);
 		i++;
 	}
+}
+
+void	create_monitor(t_philo *philos)
+{
+	pthread_t monitor;
+	pthread_create(&monitor, NULL, start_monitor, philos);
+	pthread_join(monitor, NULL);
 }
 
 void	join_philos(t_philo *philos)
@@ -81,6 +93,7 @@ int	main(int argc, char **argv)
 		info.number_of_meals_needed = 0;
 	philos->info = &info;
 	create_philos(philos);
+	create_monitor(philos);
 	join_philos(philos);
 	return (0);
 }
