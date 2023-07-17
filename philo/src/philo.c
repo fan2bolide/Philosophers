@@ -8,17 +8,28 @@ void	*philo_start(void *param)
 
 	i = 0;
 	philo = (t_philo *)param;
+	pthread_mutex_lock(&philo->info->start_philos_mutex);
+	pthread_mutex_unlock(&philo->info->start_philos_mutex);
 	pthread_mutex_lock(&philo->death_time_mutex);
 	philo->death_time = get_current_time();
+	pthread_mutex_lock(&philo->start_time_mutex);
+	philo->start_time = philo->death_time;
+	pthread_mutex_unlock(&philo->start_time_mutex);
 	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
 	pthread_mutex_unlock(&philo->death_time_mutex);
+	if (philo->id % 2 == 1)
+		usleep(20000);
+	printf("%llu %d is thinking\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
 	if (philo->info->number_of_meals_needed == 0)
 	{
 		while (1)
 		{
 			philo_eat(philo);
-			printf("%lld philo %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+			pthread_mutex_lock(&philo->start_time_mutex);
+			printf("%llu %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+			pthread_mutex_unlock(&philo->start_time_mutex);
 			philo_sleep(philo);
+			printf("%llu %d is thinking\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
 			usleep(100);
 		}
 	}
@@ -27,7 +38,7 @@ void	*philo_start(void *param)
 		while (i < philo->info->number_of_meals_needed)
 		{
 			philo_eat(philo);
-			printf("%lld philo %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+			printf("%llu %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
 			philo_sleep(philo);
 			usleep(100);
 			i++;
@@ -41,6 +52,7 @@ void	create_philos(t_philo *philos)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(&philos->info->start_philos_mutex);
 	while (i < philos->info->nb_of_philos)
 	{
 		philos[i].id = i;
@@ -48,9 +60,12 @@ void	create_philos(t_philo *philos)
 		philos[i].info = philos->info;
 		pthread_mutex_init(&philos[i].fork, NULL);
 		pthread_mutex_init(&philos[i].death_time_mutex, NULL);
+		pthread_mutex_init(&philos[i].start_time_mutex, NULL);
 		pthread_create(&philos[i].philo, NULL, philo_start, &philos[i]);
 		i++;
 	}
+	pthread_mutex_unlock(&philos->info->start_philos_mutex);
+
 }
 
 void	create_monitor(t_philo *philos)
