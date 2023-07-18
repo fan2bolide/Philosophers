@@ -17,9 +17,9 @@ void	*philo_start(void *param)
 	pthread_mutex_unlock(&philo->start_time_mutex);
 	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
 	pthread_mutex_unlock(&philo->death_time_mutex);
-	if (philo->id % 2 == 1)
-		usleep(20000);
 	printf("%llu %d is thinking\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+	if (philo->id % 2 == 1)
+		usleep(philo->info->time_to_eat * 500);
 	if (philo->info->number_of_meals_needed == 0)
 	{
 		while (1)
