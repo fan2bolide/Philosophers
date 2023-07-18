@@ -14,7 +14,7 @@ NAME = philo
 
 FLAGS = -I libft/head -I head -I . -lreadline
 
-DEBUG_FLAGS = -g3 -fsanitize=address
+DEBUG_FLAGS = -g3
 
 SRC =	philo.c\
 		ft_atoi.c\
@@ -25,6 +25,7 @@ SRC =	philo.c\
 		time.c\
 		philo_print.c\
 		philo_monitoring.c\
+		ft_usleep.c
 
 BONUS_SRC =
 

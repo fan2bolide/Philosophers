@@ -1,5 +1,4 @@
 #include "philo.h"
-#include "philo_time.h"
 
 void	*philo_start(void *param)
 {
@@ -13,23 +12,21 @@ void	*philo_start(void *param)
 	pthread_mutex_lock(&philo->death_time_mutex);
 	philo->death_time = get_current_time();
 	pthread_mutex_lock(&philo->start_time_mutex);
-	philo->start_time = philo->death_time;
+	philo->start_time = get_current_time();
 	pthread_mutex_unlock(&philo->start_time_mutex);
 	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
 	pthread_mutex_unlock(&philo->death_time_mutex);
-	printf("%llu %d is thinking\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+	printf("0 %d is thinking\n", philo->id + 1);
 	if (philo->id % 2 == 1)
-		usleep(philo->info->time_to_eat * 500);
+		ft_usleep(philo->info->time_to_eat * 500);
 	if (philo->info->number_of_meals_needed == 0)
 	{
 		while (1)
 		{
 			philo_eat(philo);
-			pthread_mutex_lock(&philo->start_time_mutex);
-			printf("%llu %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
-			pthread_mutex_unlock(&philo->start_time_mutex);
+			philo_print(philo, "is sleeping");
 			philo_sleep(philo);
-			printf("%llu %d is thinking\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+			philo_print(philo, "is thinking");
 			usleep(100);
 		}
 	}
@@ -38,8 +35,9 @@ void	*philo_start(void *param)
 		while (i < philo->info->number_of_meals_needed)
 		{
 			philo_eat(philo);
-			printf("%llu %d is sleeping\n", get_timestamp(philo->philos, get_current_time()), philo->id + 1);
+			philo_print(philo, "is sleeping");
 			philo_sleep(philo);
+			philo_print(philo, "is thinking");
 			usleep(100);
 			i++;
 		}
@@ -107,8 +105,12 @@ int	main(int argc, char **argv)
 	else
 		info.number_of_meals_needed = 0;
 	philos->info = &info;
+	pthread_mutex_init(&philos->info->start_philos_mutex, NULL);
+	pthread_mutex_init(&philos->info->dead_philo_mutex, NULL);
 	create_philos(philos);
 	create_monitor(philos);
 	join_philos(philos);
+	pthread_mutex_destroy(&philos->info->dead_philo_mutex);
+	free(philos);
 	return (0);
 }

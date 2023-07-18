@@ -5,6 +5,8 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# define NB_OF_USECONDS_IN_A_SECOND 1000000
+# define NB_OF_USECONDS_IN_A_MILLISECOND 1000
 
 typedef struct s_philo_infos
 {
@@ -31,9 +33,18 @@ typedef struct s_philo
 	t_philo_info	*info;
 }	t_philo;
 
-int		ft_atoi(const char *str);
-void	philo_sleep(t_philo *philo);
-void	philo_eat(t_philo *philo);
-void	*start_monitor(void *param);
+
+struct timeval	get_current_time(void);
+long long		get_timestamp(const t_philo *philosopher,
+							   const struct timeval current_time);
+void			timeval_add_ms(struct timeval *tv, const int n);
+int				timeval_compare(const struct timeval t1, \
+								const struct timeval t2);
+int				ft_atoi(const char *str);
+void			philo_sleep(t_philo *philo);
+void			philo_eat(t_philo *philo);
+void			philo_print(t_philo *philo, char *message);
+void			*start_monitor(void *param);
+void			ft_usleep(int time_in_us);
 
 #endif
