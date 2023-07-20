@@ -12,7 +12,7 @@
 
 NAME = philo
 
-FLAGS = -I libft/head -I head -I . -lreadline
+FLAGS = -Wall -Werror -Wextra -I head
 
 DEBUG_FLAGS = -g3
 
@@ -20,12 +20,12 @@ SRC =	philo.c\
 		ft_atoi.c\
 		check_args.c\
 		philo_eating.c\
-		philo_thinking.c\
 		philo_sleeping.c\
 		time.c\
 		philo_print.c\
 		philo_monitoring.c\
-		ft_usleep.c
+		ft_usleep.c\
+		start_philo.c
 
 BONUS_SRC =
 
@@ -39,7 +39,7 @@ all : create_obj_folder
 	$(MAKE) $(NAME)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) $(FLAGS) $(DEBUG_FLAGS) -o $(NAME)
+	$(CC) $(OBJ) $(FLAGS) -o $(NAME)
 
 bonus : create_obj_folder .bonus
 
@@ -50,7 +50,7 @@ create_obj_folder :
 	mkdir -p obj
 
 obj/%.o : src/%.c Makefile
-	cc $(DEBUG_FLAGS) -Werror -Wall -Wextra -c $< -MD -I head -o $@
+	cc $(FLAGS) -c $< -MD -o $@
 
 debug :
 	$(CC) $(OBJ) $(FLAGS) $(DEBUG_FLAGS) -o debug$(NAME)

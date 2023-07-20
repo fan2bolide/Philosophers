@@ -1,6 +1,6 @@
-#include "philo_time.h"
+#include "philo.h"
 
-void ft_usleep(int time_in_us)
+void	ft_usleep(int time_in_us)
 {
 	struct timeval end_time;
 	end_time = get_current_time();

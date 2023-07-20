@@ -1,7 +1,5 @@
 #include <sys/time.h>
-
 #include "philo.h"
-#include "philo_time.h"
 
 #define NB_OF_USECONDS_IN_A_SECOND 1000000
 #define NB_OF_USECONDS_IN_A_MILLISECOND 1000
@@ -29,7 +27,7 @@ long long	get_timestamp(const t_philo *philosopher,
 			  / NB_OF_USECONDS_IN_A_MILLISECOND);
 }
 
-void	timeval_add_ms(struct timeval *tv, const int number_of_ms_to_add)
+struct timeval	*timeval_add_ms(struct timeval *tv, const int number_of_ms_to_add)
 {
 	const unsigned long long	new_tv_usec = tv->tv_usec + (number_of_ms_to_add
 															 * (long long)NB_OF_USECONDS_IN_A_MILLISECOND);
@@ -41,6 +39,7 @@ void	timeval_add_ms(struct timeval *tv, const int number_of_ms_to_add)
 	}
 	else
 		tv->tv_usec = new_tv_usec;
+	return (tv);
 }
 
 int	timeval_compare(const struct timeval t1, const struct timeval t2)
