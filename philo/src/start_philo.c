@@ -12,6 +12,15 @@
 
 #include "philo.h"
 
+static void	init_timings(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->timing_mutex);
+	philo->start_time = get_current_time();
+	philo->death_time = get_current_time();
+	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
+	pthread_mutex_unlock(&philo->timing_mutex);
+}
+
 void	*philo_start(void *param)
 {
 	t_philo	*philo;
@@ -21,6 +30,7 @@ void	*philo_start(void *param)
 	philo = (t_philo *)param;
 	pthread_mutex_lock(&philo->info->start_philos_mutex);
 	pthread_mutex_unlock(&philo->info->start_philos_mutex);
+	init_timings(philo);
 	printf("0 %d is thinking\n", philo->id + 1);
 	if (philo->id % 2 == 1)
 		ft_usleep(philo->info->time_to_eat * 500);
@@ -38,13 +48,4 @@ void	*philo_start(void *param)
 			i = -1;
 	}
 	return (NULL);
-}
-
-static void	init_timings(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->timing_mutex);
-	philo->start_time = get_current_time();
-	philo->death_time = get_current_time();
-	timeval_add_ms(&philo->death_time, philo->info->time_to_die);
-	pthread_mutex_unlock(&philo->timing_mutex);
 }

@@ -88,9 +88,9 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&philos->info->start_philos_mutex, NULL);
 	pthread_mutex_init(&philos->info->dead_philo_mutex, NULL);
 	create_philos(philos);
+	ft_usleep(50000);
 	create_monitor(philos);
 	join_philos(philos);
 	pthread_mutex_destroy(&philos->info->dead_philo_mutex);
-	free(philos);
-	return (0);
+	return (free(philos), 0);
 }
