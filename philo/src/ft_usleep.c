@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:34:00 by bajeanno          #+#    #+#             */
+/*   Updated: 2023/07/20 16:34:01 by bajeanno         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	ft_usleep(int time_in_us)
 {
-	struct timeval end_time;
+	struct timeval	end_time;
+
 	end_time = get_current_time();
 	timeval_add_ms(&end_time, time_in_us / 1000);
 	usleep(time_in_us / 2);

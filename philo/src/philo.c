@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:33:48 by bajeanno          #+#    #+#             */
+/*   Updated: 2023/07/20 16:33:49 by bajeanno         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	create_philos(t_philo *philos)
@@ -17,19 +29,34 @@ void	create_philos(t_philo *philos)
 		i++;
 	}
 	pthread_mutex_unlock(&philos->info->start_philos_mutex);
+}
 
+void	destroy_philos(t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_destroy(&philos->info->start_philos_mutex);
+	while (i < philos->info->nb_of_philos)
+	{
+		pthread_mutex_destroy(&philos[i].timing_mutex);
+		pthread_mutex_destroy(&philos[i].fork);
+		pthread_detach(philos[i].philo);
+		i++;
+	}
 }
 
 void	create_monitor(t_philo *philos)
 {
-	pthread_t monitor;
+	pthread_t	monitor;
+
 	pthread_create(&monitor, NULL, start_monitor, philos);
 	pthread_join(monitor, NULL);
 }
 
 void	join_philos(t_philo *philos)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < philos->info->nb_of_philos)
@@ -41,11 +68,10 @@ void	join_philos(t_philo *philos)
 
 int	main(int argc, char **argv)
 {
-	t_philo	*philos;
-	t_philo_info info;
-	int		nb_of_philos;
+	t_philo			*philos;
+	t_philo_info	info;
+	int				nb_of_philos;
 
-	(void)argc;
 	if (argc < 5 || argc > 6 || ft_atoi(argv[1]) < 1)
 		return (1);
 	nb_of_philos = ft_atoi(argv[1]);
