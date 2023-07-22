@@ -47,5 +47,8 @@ void	*philo_start(void *param)
 		if (philo->info->number_of_meals_needed == 0)
 			i = -1;
 	}
+	pthread_mutex_lock(&philo->info->finished_eating_mutex);
+	philo->info->finished_eating++;
+	pthread_mutex_unlock(&philo->info->finished_eating_mutex);
 	return (NULL);
 }

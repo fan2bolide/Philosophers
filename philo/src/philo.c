@@ -80,17 +80,19 @@ int	main(int argc, char **argv)
 	info.time_to_die = ft_atoi(argv[2]);
 	info.time_to_eat = ft_atoi(argv[3]);
 	info.time_to_sleep = ft_atoi(argv[4]);
+	info.finished_eating = 0;
+	info.number_of_meals_needed = 0;
 	if (argv[5])
 		info.number_of_meals_needed = ft_atoi(argv[5]);
-	else
-		info.number_of_meals_needed = 0;
 	philos->info = &info;
 	pthread_mutex_init(&philos->info->start_philos_mutex, NULL);
 	pthread_mutex_init(&philos->info->dead_philo_mutex, NULL);
+	pthread_mutex_init(&info.finished_eating_mutex, NULL);
 	create_philos(philos);
 	ft_usleep(50000);
 	create_monitor(philos);
 	join_philos(philos);
 	pthread_mutex_destroy(&philos->info->dead_philo_mutex);
+	pthread_mutex_destroy(&philos->info->finished_eating_mutex);
 	return (free(philos), 0);
 }
