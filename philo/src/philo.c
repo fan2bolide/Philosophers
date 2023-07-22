@@ -81,6 +81,7 @@ int	main(int argc, char **argv)
 	info.time_to_eat = ft_atoi(argv[3]);
 	info.time_to_sleep = ft_atoi(argv[4]);
 	info.finished_eating = 0;
+	info.a_philo_is_dead = 0;
 	info.number_of_meals_needed = 0;
 	if (argv[5])
 		info.number_of_meals_needed = ft_atoi(argv[5]);
