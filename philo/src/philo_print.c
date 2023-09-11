@@ -17,7 +17,7 @@ void	philo_print(t_philo *philo, char *message)
 	pthread_mutex_lock(&philo->info->dead_philo_mutex);
 	if (philo->info->a_philo_is_dead == 0)
 	{
-		printf("%lld %d %s\n", get_timestamp(philo->philos, \
+		printf("%lld %d %s\n", get_timestamp(philo, \
 		get_current_time()), philo->id + 1, message);
 	}
 	pthread_mutex_unlock(&philo->info->dead_philo_mutex);
