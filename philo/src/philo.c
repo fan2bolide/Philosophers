@@ -36,14 +36,16 @@ void	destroy_philos(t_philo *philos)
 	int	i;
 
 	i = 0;
-	pthread_mutex_destroy(&philos->info->start_philos_mutex);
 	while (i < philos->info->nb_of_philos)
 	{
+		pthread_join(philos[i].philo, NULL);
 		pthread_mutex_destroy(&philos[i].timing_mutex);
-		pthread_mutex_destroy(&philos[i].fork);
-		pthread_detach(philos[i].philo);
 		i++;
 	}
+	i = 0;
+	while (i < philos->info->nb_of_philos)
+		pthread_mutex_destroy(&philos[i++].fork);
+	pthread_mutex_destroy(&philos->info->start_philos_mutex);
 }
 
 void	create_monitor(t_philo *philos)
@@ -52,18 +54,6 @@ void	create_monitor(t_philo *philos)
 
 	pthread_create(&monitor, NULL, start_monitor, philos);
 	pthread_join(monitor, NULL);
-}
-
-void	join_philos(t_philo *philos)
-{
-	int	i;
-
-	i = 0;
-	while (i < philos->info->nb_of_philos)
-	{
-		pthread_join(philos[i].philo, NULL);
-		i++;
-	}
 }
 
 int	main(int argc, char **argv)
@@ -90,9 +80,8 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&philos->info->dead_philo_mutex, NULL);
 	pthread_mutex_init(&info.finished_eating_mutex, NULL);
 	create_philos(philos);
-	ft_usleep(50000);
+	usleep(50000);
 	create_monitor(philos);
-	join_philos(philos);
 	pthread_mutex_destroy(&philos->info->dead_philo_mutex);
 	pthread_mutex_destroy(&philos->info->finished_eating_mutex);
 	return (free(philos), 0);

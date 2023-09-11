@@ -54,10 +54,10 @@ int				timeval_compare(const struct timeval t1, \
 								const struct timeval t2);
 int				ft_atoi(const char *str);
 void			philo_sleep(t_philo *philo);
-void			philo_eat(t_philo *philo);
-void			philo_print(t_philo *philo, char *message);
+int 			philo_eat(t_philo *philo);
+int 			philo_print(t_philo *philo, char *message);
 void			*start_monitor(void *param);
-void			ft_usleep(int time_in_us);
+void			ft_usleep(int time_in_us, t_philo *philo);
 void			*philo_start(void *param);
 void			destroy_philos(t_philo *philos);
 

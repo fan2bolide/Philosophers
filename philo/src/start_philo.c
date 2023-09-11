@@ -33,15 +33,18 @@ void	*philo_start(void *param)
 	init_timings(philo);
 	printf("0 %d is thinking\n", philo->id + 1);
 	if (philo->id % 2 == 1)
-		ft_usleep(philo->info->time_to_eat * 500);
+		ft_usleep(philo->info->time_to_eat * 500, philo);
 	if (philo->info->number_of_meals_needed == 0)
 		i = -1;
 	while (i < philo->info->number_of_meals_needed)
 	{
-		philo_eat(philo);
-		philo_print(philo, "is sleeping");
+		if (philo_eat(philo) < 0)
+			return (NULL);
+		if (philo_print(philo, "is sleeping") < 0)
+			return (NULL);
 		philo_sleep(philo);
-		philo_print(philo, "is thinking");
+		if (philo_print(philo, "is thinking") < 0)
+			return (NULL);
 		usleep(100);
 		i++;
 		if (philo->info->number_of_meals_needed == 0)

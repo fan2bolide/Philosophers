@@ -12,13 +12,18 @@
 
 #include "philo.h"
 
-void	ft_usleep(int time_in_us)
+void	ft_usleep(int time_in_us, t_philo *philo)
 {
 	struct timeval	end_time;
 
 	end_time = get_current_time();
 	timeval_add_ms(&end_time, time_in_us / 1000);
-	usleep(time_in_us / 2);
 	while (timeval_compare(end_time, get_current_time()) >= 0)
+	{
+		pthread_mutex_lock(&philo->info->dead_philo_mutex);
+		if (philo->info->a_philo_is_dead != 0)
+			return ((void)pthread_mutex_unlock(&philo->info->dead_philo_mutex));
+		pthread_mutex_unlock(&philo->info->dead_philo_mutex);
 		usleep(100);
+	}
 }
