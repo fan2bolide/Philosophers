@@ -14,8 +14,8 @@
 
 int	philo_eat(t_philo *philo)
 {
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t *right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 
 	left_fork = &philo->fork;
 	right_fork = &(philo->philos[(philo->id + 1) \
@@ -25,10 +25,10 @@ int	philo_eat(t_philo *philo)
 		return (pthread_mutex_unlock(left_fork), -1);
 	pthread_mutex_lock(right_fork);
 	if (philo_print(philo, "has taken a fork") < 0)
-		return (pthread_mutex_unlock(left_fork),\
+		return (pthread_mutex_unlock(left_fork), \
 			pthread_mutex_unlock(right_fork), -1);
 	if (philo_print(philo, "is eating") < 0)
-		return (pthread_mutex_unlock(left_fork),\
+		return (pthread_mutex_unlock(left_fork), \
 			pthread_mutex_unlock(right_fork), -1);
 	pthread_mutex_lock(&philo->timing_mutex);
 	philo->death_time = get_current_time();

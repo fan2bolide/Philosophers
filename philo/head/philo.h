@@ -29,7 +29,7 @@ typedef struct s_philo_infos
 	int				number_of_meals_needed;
 	int				a_philo_is_dead;
 	int				finished_eating;
-	pthread_mutex_t finished_eating_mutex;
+	pthread_mutex_t	finished_eating_mutex;
 	pthread_mutex_t	dead_philo_mutex;
 	pthread_mutex_t	start_philos_mutex;
 }	t_philo_info;
@@ -54,8 +54,8 @@ int				timeval_compare(const struct timeval t1, \
 								const struct timeval t2);
 int				ft_atoi(const char *str);
 void			philo_sleep(t_philo *philo);
-int 			philo_eat(t_philo *philo);
-int 			philo_print(t_philo *philo, char *message);
+int				philo_eat(t_philo *philo);
+int				philo_print(t_philo *philo, char *message);
 void			*start_monitor(void *param);
 void			ft_usleep(int time_in_us, t_philo *philo);
 void			*philo_start(void *param);

@@ -24,6 +24,6 @@ void	ft_usleep(int time_in_us, t_philo *philo)
 		if (philo->info->a_philo_is_dead != 0)
 			return ((void)pthread_mutex_unlock(&philo->info->dead_philo_mutex));
 		pthread_mutex_unlock(&philo->info->dead_philo_mutex);
-		usleep(100);
+		usleep(1000);
 	}
 }
