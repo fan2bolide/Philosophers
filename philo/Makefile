@@ -12,11 +12,11 @@
 
 NAME = philo
 
-FLAGS = -Wall -Werror -Wextra -I head #-fsanitize=thread -g3
+FLAGS = -Wall -Werror -Wextra -I head -fsanitize=thread -g3
 
 DEBUG_FLAGS = -g3
 
-SRC =	philo.c\
+SRC =	main.c\
 		ft_atoi.c\
 		philo_eating.c\
 		philo_sleeping.c\
@@ -24,7 +24,7 @@ SRC =	philo.c\
 		philo_print.c\
 		philo_monitoring.c\
 		ft_usleep.c\
-		start_philo.c
+		philo.c
 
 BONUS_SRC =
 

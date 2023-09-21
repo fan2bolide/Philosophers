@@ -23,11 +23,11 @@ void	*start_monitor(void *param)
 	i = 0;
 	while (1)
 	{
-		pthread_mutex_lock(&philos[i].info->finished_eating_mutex);
+		pthread_mutex_lock(&philos[i].info->end_simulation_mutex);
 		if (philos->info->finished_eating == philos->info->nb_of_philos)
-			return (pthread_mutex_unlock(&philos->info->finished_eating_mutex), \
+			return (pthread_mutex_unlock(&philos->info->end_simulation_mutex), \
 			NULL);
-		pthread_mutex_unlock(&philos->info->finished_eating_mutex);
+		pthread_mutex_unlock(&philos->info->end_simulation_mutex);
 		pthread_mutex_lock(&philos[i].timing_mutex);
 		if (timeval_compare(philos[i].death_time, get_current_time()) <= 0)
 			return (end_simulation(philos, i));
@@ -42,10 +42,10 @@ void	*start_monitor(void *param)
 void	*end_simulation(t_philo *philos, int dead_philo_index)
 {
 	pthread_mutex_unlock(&philos[dead_philo_index].timing_mutex);
-	pthread_mutex_lock(&philos->info->dead_philo_mutex);
+	pthread_mutex_lock(&philos->info->end_simulation_mutex);
 	philos->info->a_philo_is_dead = 1;
-	pthread_mutex_unlock(&philos->info->dead_philo_mutex);
+	pthread_mutex_unlock(&philos->info->end_simulation_mutex);
 	printf("%llu %d died\n", get_timestamp(philos, \
 			get_current_time()), dead_philo_index + 1);
-	return (destroy_philos(philos), NULL);
+	return (NULL);
 }

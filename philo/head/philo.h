@@ -30,7 +30,7 @@ typedef struct s_philo_infos
 	int				a_philo_is_dead;
 	int				finished_eating;
 	pthread_mutex_t	finished_eating_mutex;
-	pthread_mutex_t	dead_philo_mutex;
+	pthread_mutex_t	end_simulation_mutex;
 	pthread_mutex_t	start_philos_mutex;
 }	t_philo_info;
 

@@ -21,7 +21,8 @@ int	philo_eat(t_philo *philo)
 	right_fork = &(philo->philos[(philo->id + 1) \
 					% philo->info->nb_of_philos]).fork;
 	pthread_mutex_lock(left_fork);
-	if (philo_print(philo, "has taken a fork") < 0)
+	if (philo_print(philo, "has taken a fork") < 0 \
+	|| philo->info->nb_of_philos == 1)
 		return (pthread_mutex_unlock(left_fork), -1);
 	pthread_mutex_lock(right_fork);
 	if (philo_print(philo, "has taken a fork") < 0)
