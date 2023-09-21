@@ -24,7 +24,8 @@ SRC =	main.c\
 		philo_print.c\
 		philo_monitoring.c\
 		ft_usleep.c\
-		philo.c
+		philo.c\
+		init_threads.c
 
 BONUS_SRC =
 

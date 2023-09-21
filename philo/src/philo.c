@@ -52,7 +52,8 @@ int	philo_routine(t_philo *philo, int i)
 {
 	if (philo_eat(philo) < 0)
 		return (-1);
-	if (philo->info->number_of_meals_needed == i && philo->info->number_of_meals_needed != 0)
+	if (philo->info->number_of_meals_needed == i \
+	&& philo->info->number_of_meals_needed != 0)
 	{
 		pthread_mutex_lock(&philo->info->end_simulation_mutex);
 		philo->info->finished_eating++;
