@@ -35,6 +35,8 @@ int	main(int argc, char **argv)
 		return (1);
 	nb_of_philos = ft_atoi(argv[1]);
 	philos = malloc(sizeof (t_philo) * nb_of_philos);
+	if (!philos)
+		return (0);
 	parse_arguments(argv, &info);
 	philos->info = &info;
 	pthread_mutex_init(&philos->info->end_simulation_mutex, NULL);

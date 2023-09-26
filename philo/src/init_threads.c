@@ -31,10 +31,8 @@ void	create_philos(t_philo *philos)
 			(void)pthread_mutex_unlock(&philos->info->end_simulation_mutex));
 		pthread_mutex_lock(&philos->info->end_simulation_mutex);
 		if (pthread_create(&philos[i].philo, NULL, philo_start, &philos[i]))
-		{
 			philos->info->a_philo_is_dead = 1;
-			pthread_mutex_unlock(&philos->info->end_simulation_mutex);
-		}
+		pthread_mutex_unlock(&philos->info->end_simulation_mutex);
 		i++;
 	}
 	pthread_mutex_unlock(&philos->info->start_philos_mutex);
