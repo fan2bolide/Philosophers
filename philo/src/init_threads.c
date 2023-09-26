@@ -55,6 +55,8 @@ void	destroy_philos(t_philo *philos)
 	while (i < philos->info->nb_of_philos)
 		pthread_mutex_destroy(&philos[i++].fork);
 	pthread_mutex_destroy(&philos->info->start_philos_mutex);
+	pthread_mutex_destroy(&philos->info->end_simulation_mutex);
+	pthread_mutex_destroy(&philos->info->finished_eating_mutex);
 }
 
 void	create_monitor(t_philo *philos)

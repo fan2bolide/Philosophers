@@ -25,20 +25,6 @@ static void	parse_arguments(char **argv, t_philo_info *info)
 		info->number_of_meals_needed = ft_atoi(argv[5]);
 }
 
-static int	init_mutexes(pthread_mutex_t *mutex1, \
-						pthread_mutex_t *mutex2, \
-						pthread_mutex_t *mutex3)
-{
-	if (pthread_mutex_init(mutex1, NULL))
-		return (1);
-	if (pthread_mutex_init(mutex2, NULL))
-		return (pthread_mutex_destroy(mutex2), 1);
-	if (pthread_mutex_init(mutex3, NULL))
-		return (pthread_mutex_destroy(mutex2), \
-				pthread_mutex_destroy(mutex3), 1);
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_philo			*philos;
@@ -51,15 +37,12 @@ int	main(int argc, char **argv)
 	philos = malloc(sizeof (t_philo) * nb_of_philos);
 	parse_arguments(argv, &info);
 	philos->info = &info;
-	if (init_mutexes(&philos->info->start_philos_mutex, \
-	&philos->info->end_simulation_mutex, \
-	&info.finished_eating_mutex))
-		return (free(philos), 1);
+	pthread_mutex_init(&philos->info->end_simulation_mutex, NULL);
+	pthread_mutex_init(&philos->info->finished_eating_mutex, NULL);
+	pthread_mutex_init(&philos->info->start_philos_mutex, NULL);
 	create_philos(philos);
 	usleep(50000);
 	create_monitor(philos);
 	destroy_philos(philos);
-	pthread_mutex_destroy(&philos->info->end_simulation_mutex);
-	pthread_mutex_destroy(&philos->info->finished_eating_mutex);
 	return (free(philos), 0);
 }
