@@ -12,7 +12,7 @@
 
 NAME = philo
 
-FLAGS = -Wall -Werror -Wextra -I head -fsanitize=thread -g3
+FLAGS = -Wall -Werror -Wextra -I head -pthread #-fsanitize=thread -g3
 
 DEBUG_FLAGS = -g3
 
@@ -26,8 +26,6 @@ SRC =	main.c\
 		ft_usleep.c\
 		philo.c\
 		init_threads.c
-
-BONUS_SRC =
 
 DEPENDS	:=	$(addprefix obj/,$(SRC:.c=.d)) $(addprefix obj/,${BONUS_SRC:.c=.d})
 

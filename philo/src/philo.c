@@ -30,7 +30,6 @@ void	*philo_start(void *param)
 
 	i = 0;
 	philo = (t_philo *)param;
-	printf("je demarre\n");
 	pthread_mutex_lock(&philo->info->start_philos_mutex);
 	pthread_mutex_unlock(&philo->info->start_philos_mutex);
 	init_timings(philo);
