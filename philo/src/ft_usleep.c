@@ -28,6 +28,6 @@ void	ft_usleep(int time_in_us, t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->info->end_simulation_mutex);
-		usleep(1000);
+		usleep(100);
 	}
 }
