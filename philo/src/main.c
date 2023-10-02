@@ -81,9 +81,8 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&philos->info->end_simulation_mutex, NULL);
 	pthread_mutex_init(&philos->info->finished_eating_mutex, NULL);
 	pthread_mutex_init(&philos->info->start_philos_mutex, NULL);
-	create_philos(philos);
+	if (create_philos(philos))
+		return (1);
 	usleep(50000);
-	create_monitor(philos);
-	destroy_philos(philos);
-	return (free(philos), 0);
+	return (create_monitor(philos), destroy_philos(philos), free(philos), 0);
 }

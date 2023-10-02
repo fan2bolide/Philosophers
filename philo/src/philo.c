@@ -32,6 +32,10 @@ void	*philo_start(void *param)
 	philo = (t_philo *)param;
 	pthread_mutex_lock(&philo->info->start_philos_mutex);
 	pthread_mutex_unlock(&philo->info->start_philos_mutex);
+	pthread_mutex_lock(&philo->info->end_simulation_mutex);
+	if (philo->info->a_philo_is_dead)
+		return (pthread_mutex_unlock(&philo->info->end_simulation_mutex), NULL);
+	pthread_mutex_unlock(&philo->info->end_simulation_mutex);
 	init_timings(philo);
 	printf("0 %d is thinking\n", philo->id + 1);
 	if (philo->id % 2 == 1)
