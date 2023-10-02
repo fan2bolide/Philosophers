@@ -12,7 +12,7 @@
 
 NAME = philo
 
-FLAGS = -Wall -Werror -Wextra -I head -pthread -fsanitize=thread -g3
+FLAGS = -Wall -Werror -Wextra -I head -pthread #-fsanitize=thread -g3
 
 DEBUG_FLAGS = -g3
 
